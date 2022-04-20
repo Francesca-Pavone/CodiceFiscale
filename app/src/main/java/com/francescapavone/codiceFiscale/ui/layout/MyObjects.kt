@@ -30,8 +30,7 @@ fun GradientButton(text: String,
                    onClick: () -> Unit) {
         Button(modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
-            .padding(top = 20.dp),
+            .height(60.dp),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Transparent
             ),
@@ -43,8 +42,7 @@ fun GradientButton(text: String,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(80.dp)
-                    .background(gradient)
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .background(gradient),
                 contentAlignment = Alignment.Center
             ) {
                 Text(text = text, color = textColor, fontSize = 18.sp)

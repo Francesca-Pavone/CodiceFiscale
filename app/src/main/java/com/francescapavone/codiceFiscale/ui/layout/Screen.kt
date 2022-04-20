@@ -23,12 +23,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.francescapavone.codiceFiscale.R
+import com.francescapavone.codiceFiscale.model.CF
 import com.francescapavone.codiceFiscale.ui.theme.MyLightBlue
 import com.francescapavone.codiceFiscale.ui.theme.MyDarkBlue
+import com.francescapavone.codiceFiscale.viewmodels.CFModel
+
 
 @Composable
-fun CFscreen() {
-    val name = rememberSaveable() { mutableStateOf("") }
+fun CFscreen(fiscalCode: CF) {
+    val firstName = rememberSaveable() { mutableStateOf("") }
     val lastName = rememberSaveable() { mutableStateOf("") }
     val gender = rememberSaveable() { mutableStateOf("") }
     val dateOfBirth = rememberSaveable() { mutableStateOf("") }
@@ -77,12 +80,24 @@ fun CFscreen() {
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            MyEditText(text = name, hint = "Name", icon = Icons.TwoTone.Person)
+            if (fiscalCode.fiscalCode != "") {
+                Text(
+                    text = fiscalCode.fiscalCode,
+                    style = TextStyle(
+                        color = Color.Black,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        textAlign = TextAlign.Center
+                    )
+                )
+                Spacer(modifier = Modifier.padding(10.dp))
+            }
+            MyEditText(text = firstName, hint = "Name", icon = Icons.TwoTone.Person)
             MyEditText(text = lastName, hint = "Last name", icon = Icons.TwoTone.Person)
             MyEditText(text = gender, hint = "Gender (M/F)", icon = Icons.TwoTone.Person)
             MyEditText(text = dateOfBirth, hint = "Date of birth (dd/mm/yyyy)", icon = Icons.TwoTone.DateRange)
             MyEditText(text = birthPlace, hint = "Birth place", icon = Icons.TwoTone.LocationOn)
+            Spacer(modifier = Modifier.padding(20.dp))
             GradientButton(
                 text = "Generate Fiscal Code",
                 textColor = Color.White,
@@ -92,19 +107,16 @@ fun CFscreen() {
                         MyLightBlue
                     )
                 ),
-                onClick = {}
+                onClick = {
+                    fiscalCode.firstName = firstName.value
+                    fiscalCode.lastname = lastName.value
+                    fiscalCode.gender = gender.value
+                    fiscalCode.dateOfBirth = dateOfBirth.value
+                    fiscalCode.birthPlace = birthPlace.value
+                    fiscalCode.fiscalCode = CFModel.encode(firstName.value, lastName.value, dateOfBirth.value,gender.value, birthPlace.value)
+                }
             )
-            Text(
-                modifier = Modifier
-                    .padding(vertical =30.dp),
-                text = "PVNFNC01A56H163K",
-                style = TextStyle(
-                    color = Color.Black,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    textAlign = TextAlign.Center
-                )
-            )
+
         }
     }
 }
@@ -112,5 +124,5 @@ fun CFscreen() {
 @Preview
 @Composable
 fun CFScreenPreview(){
-    CFscreen()
+    //CFscreen()
 }
